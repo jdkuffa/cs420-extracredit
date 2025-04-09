@@ -1,71 +1,110 @@
-# GenAI for Software Development (Extra Credit)
+# GenAI for Software Development: Extra Credit Assignment
 
-# TODO: Rewrite this README.md for the extra credit assignment.
 
-* [1 Introduction](#1-introduction)  
-* [2 Getting Started](#2-getting-started)  
-  * [2.1 Preparations](#21-preparations)  
-  * [2.2 Install Packages](#22-install-packages)  
-  * [2.3 Run N-gram](#23-run-n-gram)  
-* [3 Report](#3-report)  
+# **1. Introduction**
+This project focuses on **code completion in Java using a neural network-based approach**. It builds on the traditional N-gram language modeling technique by incorporating modern deep learning methods, such as **Recurrent Neural Networks (RNNs)**, to predict the next token in a Java code sequence. The model learns token patterns and probabilities from training data, enabling it to generate accurate predictions for masked tokens. This approach has applications in software engineering automation and natural language processing.
+
+The repository includes all necessary scripts for preprocessing, training, and evaluating the model. The dataset used for training is preprocessed Java code, and the implementation leverages PyTorch for model development.
+
+
+# **2. Getting Started**
+This project requires **Python 3.9+** and is compatible with **macOS, Linux, and Windows**.
+
+## **2.1 Preparations**
+Clone the repository to your local workspace:
+```
+git clone https://github.com/jdkuffa/cs420-extracredit.git
+```
+
+Navigate into the repository:
+
+```
+cd cs420-extracredit
+```
+
+Set up a virtual environment and activate it:
+
+### For macOS/Linux:
+
+```
+python -m venv ./venv/
+```
+```
+source venv/bin/activate
+```
+
+### For Windows:
+
+```
+python -m venv ./venv/
+```
+```
+.\venv\Scripts\activate
+```
 
 ---
-
-# **1. Introduction**  
-This project explores **code completion in Java**, leveraging **N-gram language modeling**. The N-gram model predicts the next token in a sequence by learning the probability distributions of token occurrences in training data. The model selects the most probable token based on learned patterns, making it a fundamental technique in natural language processing and software engineering automation. 
-
-The extracted data and the training, testing, and evaluating sets are pre-generated in this repository. The code used for the dataset collection and data splitting is still available in ngram.py. 
-
----
-
-# **2. Getting Started**  
-
-This project is implemented in **Python 3.9+** and is compatible with **macOS, Linux, and Windows**.  
-
-## **2.1 Preparations**  
-
-(1) Clone the repository to your workspace:  
-```shell
-~ $ git clone https://github.com/jdkuffa/cs420-assignment1.git
-
-
-(2) Navigate into the repository:
-
-~ $ cd cs420-assignment1
-~/cs420-assignment1 $
-
-(3) Set up a virtual environment and activate it:
-
-For macOS/Linux:
-
-~/cs420-assignment1 $ python -m venv ./venv/
-~/cs420-assignment1 $ source venv/bin/activate
-(venv) ~/cs420-assignment1 $ 
-
 
 To deactivate the virtual environment, use the command:
 
-
-(venv) $ deactivate
+```
+deactivate
 ```
 
 ## **2.2 Install Packages**
-
-Install the required dependencies:
+Install all required dependencies listed in requirements.txt:
 
 ```
-(venv) ~/cs420-assignment1 $ pip install -r requirements.txt
+pip install -r requirements.txt
+```
+## 2.3 Run Code Completion Model
+**Prepare Dataset:** Ensure your dataset file is located at data/sample-pt.csv. You can replace this path with your own dataset file if needed.
+**Run Training and Evaluation:** Execute the main script to train and evaluate the RNN-based model on the provided dataset:
+
+```
+python extracredit.py
 ```
 
-## **2.3 Run N-gram**
+**Output:** The training performance log will be saved as ```results/training_performance.csv```. A plot of training loss over epochs will be displayed.
 
-(1) Run N-gram Demo
+# 3. **Key Features of the Codebase**
+**Data Preprocessing:**
+- Cleaning: Removes invalid characters from Java code.
+- Tokenization: Converts Java code into a sequence of tokens using javalang.
+- Masking: Randomly masks 15% of tokens for prediction during training.
 
-This script creates a new N-gram model using the corpus provided and selects the best-performing model based on our eval set. It then evaluates the model on the same eval set and generate the JSON output results_teacher_model.json.
+**Model Architecture:**
+- Embedding Layer: Converts tokens into dense vector representations.
+- RNN (LSTM): Processes sequential data to capture token dependencies.
+- Fully Connected Layer: Outputs probabilities for each token in the vocabulary.
+
+**Training:**
+- Implements cross-entropy loss for optimization.
+- Logs performance metrics across epochs.
+- Supports batch processing with PyTorch's DataLoader.
+
+
+# 4. Example Workflow
+Input Example:
+```java
+public int add(int a, int b) {
+    return a + b;
+}
 ```
-(venv) ~/cs420-assignment1 $ python ngram.py corpus.txt
+
+Tokenized Output:
+```text
+['public', 'int', 'add', '(', 'int', 'a', ',', 'int', 'b', ')', '{', 'return', 'a', '+', 'b', ';', '}']
 ```
 
-## 3. Report
+Masked Input:
+```text
+['public', 'int', 'MASK_1', '(', 'int', 'a', ',', 'int', 'b', ')', '{', 'return', 'a', '+', 'b', ';', '}']
+```
 
-The assignment report is available in the file "Assignment_Report.pdf."
+Model Prediction:
+```text
+'MASK_1' → 'add'
+```
+
+# 5. Additional Information
+This project is licensed under the MIT License.
