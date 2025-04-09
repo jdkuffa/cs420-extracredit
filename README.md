@@ -1,4 +1,4 @@
-# GenAI for Software Development (Extra Credit)
+# GenAI for Software Development: Extra Credit Assignment
 
 ---
 
