@@ -42,6 +42,8 @@ python -m venv ./venv/
 .\venv\Scripts\activate
 ```
 
+---
+
 To deactivate the virtual environment, use the command:
 
 ```
@@ -62,25 +64,20 @@ pip install -r requirements.txt
 python extracredit.py
 ```
 
-Output:
-
-The training performance log will be saved as ```results/training_performance.csv```.
-
-A plot of training loss over epochs will be displayed.
-
+**Output:** The training performance log will be saved as ```results/training_performance.csv```. A plot of training loss over epochs will be displayed.
 
 # 3. **Key Features of the Codebase**
-Data Preprocessing:
+**Data Preprocessing:**
 - Cleaning: Removes invalid characters from Java code.
 - Tokenization: Converts Java code into a sequence of tokens using javalang.
 - Masking: Randomly masks 15% of tokens for prediction during training.
 
-Model Architecture:
+**Model Architecture:**
 - Embedding Layer: Converts tokens into dense vector representations.
 - RNN (LSTM): Processes sequential data to capture token dependencies.
 - Fully Connected Layer: Outputs probabilities for each token in the vocabulary.
 
-Training:
+**Training:**
 - Implements cross-entropy loss for optimization.
 - Logs performance metrics across epochs.
 - Supports batch processing with PyTorch's DataLoader.
