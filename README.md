@@ -2,13 +2,13 @@
 
 
 # **1. Introduction**
-This project focuses on code completion in Java using a neural network-based approach. It builds on the traditional N-gram language modeling technique by incorporating modern deep learning methods, such as Recurrent Neural Networks (RNNs), to predict the next token in a Java code sequence. The model learns token patterns and probabilities from training data, enabling it to generate accurate predictions for masked tokens. This approach has applications in software engineering automation and natural language processing.
+This project focuses on **code completion in Java using a neural network-based approach**. It builds on the traditional N-gram language modeling technique by incorporating modern deep learning methods, such as **Recurrent Neural Networks (RNNs)**, to predict the next token in a Java code sequence. The model learns token patterns and probabilities from training data, enabling it to generate accurate predictions for masked tokens. This approach has applications in software engineering automation and natural language processing.
 
 The repository includes all necessary scripts for preprocessing, training, and evaluating the model. The dataset used for training is preprocessed Java code, and the implementation leverages PyTorch for model development.
 
 
 # **2. Getting Started**
-This project requires Python 3.9+ and is compatible with macOS, Linux, and Windows.
+This project requires **Python 3.9+** and is compatible with **macOS, Linux, and Windows**.
 
 ## **2.1 Preparations**
 Clone the repository to your local workspace:
