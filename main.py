@@ -1,33 +1,33 @@
 # Import necessary libraries
+import sys
+from itertools import product
 from collections import Counter
 import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
-from itertools import product
 from tqdm import tqdm
 import numpy as np
-import sys
 from transformers import AutoModelForCausalLM
+import javalang
 
 # Define device
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
 
 # Constants
 MAX_VOCAB_SIZE = 10000  # Maximum vocabulary size
 
 # File paths
-SAMPLE_DATA_FILE = 'datasets/data/sample-pt.csv'
-INPUT_TRAIN_PATH = 'datasets/generated_files/input_train_dataset.csv'
-INPUT_EVAL_PATH = 'datasets/generated_files/input_eval_dataset.csv'
-INPUT_TEST_PATH = 'datasets/generated_files/input_test_dataset.csv'
-TARGET_TRAIN_PATH = 'datasets/generated_files/target_train_dataset.csv'
-TARGET_EVAL_PATH = 'datasets/generated_files/target_eval_dataset.csv'
-TARGET_TEST_PATH = 'datasets/generated_files/target_test_dataset.csv'
+SAMPLE_DATA_FILE = 'data/sample-pt.csv'
+INPUT_TRAIN_PATH = 'data/input_train_dataset.csv'
+INPUT_EVAL_PATH = 'data/input_eval_dataset.csv'
+INPUT_TEST_PATH = 'data/input_test_dataset.csv'
+TARGET_TRAIN_PATH = 'data/target_train_dataset.csv'
+TARGET_EVAL_PATH = 'data/target_eval_dataset.csv'
+TARGET_TEST_PATH = 'data/target_test_dataset.csv'
 
 
-# Custom Dataset class
+# Custom Dataset Class
 class CodeCompletionDataset(Dataset):
     def __init__(self, input_data, target_data, vocab, seq_length):
         """
@@ -81,7 +81,7 @@ class CodeCompletionDataset(Dataset):
         return sequence[:max_len] + [self.pad_token_id] * max(0, max_len - len(sequence))
 
 
-# Model Architectures
+# Model architectures
 class VanillaRNN(nn.Module):
 	def __init__(self, vocab_size, embedding_dim, hidden_dim, output_dim, n_layers, dropout=0):
 		super(VanillaRNN, self).__init__()
@@ -90,6 +90,7 @@ class VanillaRNN(nn.Module):
 		self.fc = nn.Linear(hidden_dim, output_dim)
 
 	def forward(self, x):
+
 		if isinstance(x, int):  # If x is an integer, convert it
 			x = torch.tensor([x], dtype=torch.long)  # Convert to tensor
 
@@ -99,7 +100,7 @@ class VanillaRNN(nn.Module):
 		return out, hidden
 
 
-# Define simple LSTM-based model
+# Simple LSTM-based model
 class LSTMModel(nn.Module):
 	def __init__(self, vocab_size, embedding_dim, hidden_dim, output_dim, n_layers, dropout):
 		super(LSTMModel, self).__init__()
@@ -116,8 +117,7 @@ class LSTMModel(nn.Module):
 		logits = self.fc(lstm_out)
 		return logits, hidden
 
-
-# Training functions
+# Training Functions
 def train_model(model, dataloader, optimizer, criterion, epochs):
 	"""Train the model and display step-wise training details."""
 	model.train()
@@ -187,22 +187,17 @@ def generate_vocab_with_completion_n(methods):
 	Returns:
 		dict: Vocabulary mapping each unique token to a unique index.
 	"""
-	# Count the frequency of each token
-	token_counts = Counter(token for seq in methods for token in seq)
+	# Extract unique tokens from the methods
+	unique_tokens = set(token for seq in methods for token in seq)
 
 	# Add special tokens
-	special_tokens = ["<PAD>", "[COMPLETION_N]", "<UNK>"]
-
-	# Take the most common tokens excluding the special tokens
-	most_common_tokens = [token for token, _ in token_counts.most_common(MAX_VOCAB_SIZE - len(special_tokens))]
-
-	# Include special tokens first
-	vocab_tokens = special_tokens + most_common_tokens
+	unique_tokens.add("[COMPLETION_N]")  # Ensure one occurrence of [COMPLETION_N]
+	unique_tokens.add("<PAD>")  # Ensure padding token is included
 
 	# Assign each token a unique index
-	vocab = {token: idx for idx, token in enumerate(vocab_tokens)}
+	vocab = {token: idx for idx, token in enumerate(unique_tokens)}
 
-	return vocab    
+	return vocab
 
 # 6. Hyperparameter Tuning
 class HyperparameterTuner:
@@ -320,7 +315,7 @@ class HyperparameterTuner:
 					refinedPred = ' '.join(predicted_tokens[0:pad_pos])
 					print(f"Prediction: {refinedPred}\n")
 
-		print(f"Correct Predictions: ".format(correct_predictions))
+		print("Correct Predictions: {}".format(correct_predictions))
 		return eval_loss / len(self.eval_dataloader)
 
 	def tune(self):
@@ -368,9 +363,6 @@ class HyperparameterTuner:
 
 # 7. Main Pipeline
 def main(hp=1, mode="training"):
-	with open(SAMPLE_DATA_FILE) as f:
-		methods = [item.rstrip().split() for item in f.readlines()] 
-		
 	with open(INPUT_TRAIN_PATH) as f:
 		input_train_dataset = [item.rstrip().split() for item in f.readlines()]
 
@@ -389,6 +381,9 @@ def main(hp=1, mode="training"):
 	with open(TARGET_TEST_PATH) as f:
 		target_test_dataset = [item.rstrip().split() for item in f.readlines()]
 
+	with open(SAMPLE_DATA_FILE) as f:
+		methods = [item.rstrip().split() for item in f.readlines()]
+
 	#print(methods)
 
 	# Create vocabulary
@@ -406,6 +401,8 @@ def main(hp=1, mode="training"):
 	dataloader_train = DataLoader(datasetTrain, batch_size=32, shuffle=True)
 	dataloader_test = DataLoader(datasetTest, batch_size=32, shuffle=True)
 	dataloader_eval = DataLoader(datasetEval, batch_size=32, shuffle=True)
+
+
 
 	if hp==1:
 
