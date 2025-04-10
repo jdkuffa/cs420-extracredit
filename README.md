@@ -11,9 +11,13 @@ The repository includes all necessary scripts for preprocessing, training, and e
 This project requires **Python 3.9+** and is compatible with **macOS, Linux, and Windows**.
 
 ## **2.1 Preparations**
-Clone the repository to your local workspace:
+Install Git Large File Storage
+https://git-lfs.com/ 
+
+
+Clone the repository to your local workspace using Git LFS :
 ```
-git clone https://github.com/jdkuffa/cs420-extracredit.git
+git lfs clone https://github.com/jdkuffa/cs420-extracredit.git
 ```
 
 Navigate into the repository:
