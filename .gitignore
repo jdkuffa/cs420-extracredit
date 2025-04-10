@@ -25,3 +25,8 @@ replay_pid*
 
 # Virtual environemnt
 venv/
+
+# Log files
+results/
+# Temporary fix
+datasets/data/
