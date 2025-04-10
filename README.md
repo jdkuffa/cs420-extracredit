@@ -11,9 +11,19 @@ The repository includes all necessary scripts for preprocessing, training, and e
 This project requires **Python 3.9+** and is compatible with **macOS, Linux, and Windows**.
 
 ## **2.1 Preparations**
-Clone the repository to your local workspace:
+Install Git Large File Storage
+https://git-lfs.com/ 
+
 ```
-git clone https://github.com/jdkuffa/cs420-extracredit.git
+git lfs install
+```
+
+Clone the repository to your local workspace using Git LFS:
+
+
+
+```
+git lfs clone https://github.com/jdkuffa/cs420-extracredit.git
 ```
 
 Navigate into the repository:
@@ -61,7 +71,7 @@ pip install -r requirements.txt
 **Run Training and Evaluation:** Execute the main script to train and evaluate the RNN-based model on the provided dataset:
 
 ```
-python extracredit.py
+python main.py
 ```
 
 **Output:** The training performance log will be saved as ```results/training_performance.csv```. A plot of training loss over epochs will be displayed.
