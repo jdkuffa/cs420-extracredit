@@ -14,8 +14,14 @@ This project requires **Python 3.9+** and is compatible with **macOS, Linux, and
 Install Git Large File Storage
 https://git-lfs.com/ 
 
+```
+git lfs install
+```
 
-Clone the repository to your local workspace using Git LFS :
+Clone the repository to your local workspace using Git LFS:
+
+
+
 ```
 git lfs clone https://github.com/jdkuffa/cs420-extracredit.git
 ```
